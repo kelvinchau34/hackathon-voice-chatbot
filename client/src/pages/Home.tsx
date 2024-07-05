@@ -1,14 +1,7 @@
 import { Button } from "@westpac/ui";
-import { useNavigate } from "react-router-dom";
 import AccountCard from "../components/AccountCard";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const processVoiceInput = () => {
-    //call to AI wrapper
-    //redirect to transfer page after processing
-    navigate("/transfer");
-  };
   return (
     <div>
       <div className="flex justify-between items-baseline">
@@ -18,8 +11,14 @@ const Home = () => {
         </Button>
       </div>
       <div className="mt-2 space-y-3">
-        <AccountCard></AccountCard>
-        <AccountCard></AccountCard>
+        <AccountCard
+          accountType="Westpac Choice"
+          amount="$420.39"
+        ></AccountCard>
+        <AccountCard
+          accountType="Westpac Live Savings"
+          amount="$12,000"
+        ></AccountCard>
       </div>
     </div>
   );

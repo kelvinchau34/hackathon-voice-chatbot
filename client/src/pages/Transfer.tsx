@@ -1,5 +1,12 @@
 import { Button, Input, Select } from "@westpac/ui";
 
+// interface ITransferProps {
+//   name: string;
+//   mobileNumber: string;
+//   accountName: string;
+//   accountAmount: string;
+// }
+
 const Transfer = () => {
   return (
     <>
