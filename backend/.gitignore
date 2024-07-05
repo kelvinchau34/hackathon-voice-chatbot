@@ -1,0 +1,76 @@
+# Ignore the bin directory
+bin/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore Flask instance folder (if any)
+instance/
+
+# Ignore Flask specific files
+*.db
+*.sqlite3
+*.log
+
+# Ignore compiled dependencies
+*.egg-info/
+.eggs/
+
+# Ignore distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg
+*.manifest
+*.spec
+
+# Ignore pytest cache
+.cache/
+
+# Ignore coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.nox/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore node_modules (if using Node.js)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore pipenv files
+Pipfile.lock
+
+# Ignore pyenv files
+.python-version
