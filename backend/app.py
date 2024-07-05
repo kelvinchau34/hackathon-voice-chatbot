@@ -29,6 +29,7 @@ def get_intent():
     # Get the predicted label (replace with your specific labels)
     predicted_label = outputs.logits.argmax().item()
 
+    print(input_text)
     # Determine the response based on the predicted intent
     if predicted_label == 0:
         classification = "transaction"
@@ -49,10 +50,11 @@ def get_intent():
     elif classification == "unknown intent":
         tts = gTTS('Sorry, I cannot help you with this today. Is there something else I can do?')
 
+    print(classification)
     # Save the audio file
-    tts.save('sound/audio.mp3')
+    tts.save('../sound/audio.mp3')
 
-     # Optionally, return the classification for further use
+    # Optionally, return the classification for further use
     return classification
 
 if __name__ == '__main__':

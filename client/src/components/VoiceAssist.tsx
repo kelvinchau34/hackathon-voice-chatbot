@@ -16,7 +16,6 @@ const VoiceAssist = () => {
   };
 
   const startVoiceChat = () => {
-    // respond(greeting);
     setRecordingStatus("recording");
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
