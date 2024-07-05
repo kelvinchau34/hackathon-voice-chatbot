@@ -1,65 +1,39 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from pydub import AudioSegment
 from pydub.playback import play
-from flask_socketio import SocketIO, emit
-import whisper
-import os
-import logging
+from transformers import GPT2Tokenizer, GPT2ForSequenceClassification
+import torch
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'  
+app.config['UPLOAD_FOLDER'] = 'uploads'
 CORS(app)  # Enable CORS for all routes
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
+# Load the GPT-2 tokenizer and model
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+model = GPT2ForSequenceClassification.from_pretrained('gpt2')
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'audio' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
+# Define function for intent recognition
+def get_intent(input_text):
+    # Tokenize input text
+    inputs = tokenizer(input_text, return_tensors='pt')
 
-    file = request.files['audio']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
+    # Perform inference
+    with torch.no_grad():
+        outputs = model(**inputs)
 
-    try:
-        # Save uploaded file
-        audio_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(audio_path)
+    # Get the predicted label (replace with your specific labels)
+    predicted_label = outputs.logits.argmax().item()
 
-        return jsonify({'message': 'File uploaded successfully', 'filename': file.filename}), 200
-    except Exception as e:
-        logging.error(f'Failed to upload file: {str(e)}')
-        return jsonify({'error': f'Failed to upload file: {str(e)}'}), 500
+    # Return the predicted intent (adjust according to your label mapping)
+    if predicted_label == 0:
+        return "Transaction"
+    elif predicted_label == 1:
+        return "Check Interest rates"
+    elif predicted_label == 2:
+        return "Scam Sheck"
+    else:
+        return "Unknown Intent"
 
-@app.route('/transcribe', methods=['POST'])
-def transcribe_audio():
-    if 'audio' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-
-    file = request.files['audio']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    try:
-        # Save uploaded file
-        audio_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(audio_path)
-
-        # Perform transcription using Whisper or any other service
-        model = whisper.load_model("base")
-        text = model.transcribe(audio_path, fp16=False )  # Replace with your transcription method
-
-        return jsonify({'transcription': text}), 200
-
-    except FileNotFoundError:
-        logging.error('File not found during transcription')
-        return jsonify({'error': 'File not found during transcription'}), 500
-
-    except Exception as e:
-        logging.error(f'Transcription failed: {str(e)}')
-        return jsonify({'error': f'Transcription failed: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
